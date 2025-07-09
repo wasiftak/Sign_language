@@ -1,72 +1,62 @@
-Real-Time Sign Language Recognition with LSTM
-💡 Introduction
-This project enables real-time recognition of dynamic sign language gestures using an LSTM neural network. By analyzing sequences of hand landmarks (extracted via MediaPipe), the model classifies isolated signs from both American (ASL) and Indian (ISL) alphabets. Designed for low-latency deployment, it bridges communication gaps without relying on sensors or static images.
+# 🤟 Real-Time Sign Language Recognition with LSTM
 
-📄 Custom Dataset (LSTM-Specific)
-Unlike CNN-based approaches (which use pre-existing Kaggle datasets), this LSTM model trains on a custom-collected dataset:
+## 💡 Introduction
+This project enables **real-time recognition of dynamic sign language gestures** using an LSTM-based neural network.  
+By analyzing sequences of hand landmarks (extracted with MediaPipe), the model can classify isolated signs from both **American Sign Language (ASL)** and **Indian Sign Language (ISL)** alphabets.  
+Designed for **low-latency, sensor-free deployments**, this system bridges communication gaps without relying on static images or gloves.
 
-Data Source: Real-time webcam captures with MediaPipe landmark extraction.
+---
 
-Classes: 52 (A–Z in ASL + A–Z in ISL).
+## 📄 Dataset
+- **Name**: Custom In-house Sign Landmark Dataset
+- **Source**: Real-time webcam recordings using MediaPipe landmark extraction
+- **Classes**: 52 (A–Z in ASL + A–Z in ISL)
+- **Samples**:  
+  - 5,000+ labeled sequences
+  - Each sequence contains 15 frames
+  - Each frame has 126 features (3D coordinates from 21 landmarks × 2 hands)
 
-Samples:
+---
 
-5,000+ labeled sequences (15 frames each).
+## ⚙️ How It Works
 
-126 features/frame: 3D coordinates (x, y, z) for 21 landmarks × 2 hands.
+### 🎯 Model Architecture
+- **Input**: 15-frame sequence (shape: 15 × 126)
+- **Core**: LSTM layer with 128 units to capture temporal dynamics
+- **Output**: Softmax over 52 classes
+- **Training**:  
+  - 10 epochs  
+  - 80:20 split (train:validation)  
+  - Optimizer: Adam
 
-Variations: Speed, lighting, and hand positioning.
+---
 
-Preprocessing: Zero-padding for missing hands, normalized coordinates.
+### ⚡ Real-Time Pipeline
+1. **Hand Landmark Extraction**: MediaPipe detects 21 landmarks per hand in each frame.
+2. **Sequence Buffering**: Frames are collected into 15-frame sliding windows.
+3. **Prediction**: LSTM classifies the sign if confidence > 90%.
 
-(Note: The CNN path uses Kaggle’s ASL/ISL datasets, but this LSTM pipeline is fully custom.)
+---
 
-⚙️ How It Works
-🎯 Model Architecture
-Input: 15-frame sliding window of hand landmarks (15×126 tensor).
+## 📊 Results
 
-LSTM Layer: 128 units to capture temporal dynamics.
+| Metric    | Score  |
+|------------|---------|
+| Accuracy | 96.48% |
+| Precision | 0.9697 |
+| Recall    | 0.9648 |
+| F1-Score | 0.9638 |
+| AUC-ROC | 0.98  |
 
-Output: Softmax over 52 classes.
+### ✅ Key Observations
+- High accuracy on most single-handed signs
+- Some confusion in two-handed or visually similar gestures (e.g., ASL 'N' vs ISL 'K')
+- Minimal overfitting (validation accuracy stabilizes ~96.5%)
 
-Training: 10 epochs (80:20 split), Adam optimizer.
+---
 
-⚡ Real-Time Pipeline
-Landmark Extraction: MediaPipe detects hands and outputs 21 landmarks per hand.
+## 🚀 Quick Start
 
-Sequence Buffering: Frames are aggregated into 15-frame sequences.
-
-Prediction: LSTM classifies the gesture if confidence > 90%.
-
-📊 Results
-Metric	Score
-Accuracy	96.48%
-Precision	0.9697
-Recall	0.9648
-F1-Score	0.9638
-AUC-ROC	0.98
-Key Findings:
-
-High accuracy but struggles with two-handed signs (e.g., ASL ‘N’ vs. ISL ‘K’).
-
-Minimal overfitting (validation accuracy plateaus at ~96.5%).
-
-https://media/image5.png
-Figure: Misclassifications occur mainly between similar gestures.
-
-🚀 Try It Yourself
-Prerequisites
-bash
-pip install mediapipe tensorflow opencv-python  
-Run Real-Time Demo
-bash
-python lstm_inference.py --model_path ./models/lstm_landmark.h5  
-Train from Scratch
-Record your own sequences:
-
-python
-python collect_landmarks.py --output_dir ./custom_data  
-Train:
-
-bash
-python train_lstm.py --data_path ./custom_data/sequences.npy  
+### 🔧 Install Requirements
+```bash
+pip install mediapipe tensorflow opencv-python
