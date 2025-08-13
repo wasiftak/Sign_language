@@ -1,6 +1,8 @@
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import json
 
-with open("lstm_label_map2.json", "r") as f:
+with open("lstm_label_map.json", "r") as f:
     label_map = json.load(f)
 from data_preprocess import X_train, X_val, y_train, y_val
 from tensorflow.keras.models import Sequential
@@ -15,4 +17,6 @@ model = Sequential([
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=30, batch_size=16)
-model.save("lstm_sign_model2.h5")
+# ...existing code...
+model.save(r"C:\Users\WASIF TAK\OneDrive\Desktop\ai_project\lstm_sign_model.h5")
+# ...existing code...

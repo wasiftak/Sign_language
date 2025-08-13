@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 import json
 
 # === PATH TO YOUR DATASET ===
-DATA_PATH = "MP_Data_LSTM"
+DATA_PATH = r'C:\Users\WASIF TAK\OneDrive\Desktop\ai_project\MP_Data_LSTM'
 
 X, y = [], []
 label_map = {}
@@ -34,7 +34,7 @@ y = np.array(y)
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, shuffle=True)
 
 # === Save label map ===
-with open("lstm_label_map2.json", "w") as f:
+with open("lstm_label_map.json", "w") as f:
     json.dump(label_map, f)
 
 # === Optional: Save the processed data ===

@@ -99,8 +99,8 @@ import mediapipe as mp
 import time
 
 # ==== YOU SHOULD CHANGE THIS PART ====
-actions = ['A_isl']  # <-- your labels here
-DATA_PATH = os.path.join('MP_Data_LSTM')  # <-- dataset save folder
+actions = ['Z_isl']  # <-- your labels here
+DATA_PATH = r'C:\Users\WASIF TAK\OneDrive\Desktop\ai_project\MP_Data_LSTM'
 no_sequences = 100  # <-- sequences per label
 sequence_length = 15  # <-- frames per sequence
 # =====================================
@@ -119,7 +119,7 @@ for action in actions:
 
         # Show camera feed + 1-second countdown
         start_time = time.time()
-        while time.time() - start_time < 1:
+        while time.time() - start_time < 2:
             ret, frame = cap.read()
             if not ret:
                 break
